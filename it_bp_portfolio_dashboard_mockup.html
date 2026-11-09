@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT Portfolio Control — MVP Mockup</title>
+<style>
+:root{
+ --bg:#f4f6fa;--panel:#fff;--ink:#172033;--muted:#6b7487;--line:#e7eaf0;
+ --nav:#17243a;--nav2:#22344f;--blue:#4263eb;--blue2:#edf1ff;
+ --green:#17865b;--greenbg:#e8f6ef;--amber:#b7791f;--amberbg:#fff4dd;
+ --red:#c43d4b;--redbg:#ffebed;--purple:#7654b8;--shadow:0 5px 22px rgba(22,34,56,.06);
+}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,Segoe UI,Arial,sans-serif}
+button,input,select{font:inherit} button{cursor:pointer}
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+.sidebar{background:var(--nav);color:#dce5f2;padding:24px 16px;display:flex;flex-direction:column;gap:24px}
+.brand{display:flex;align-items:center;gap:11px;padding:2px 8px 18px;border-bottom:1px solid #33435b}
+.logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#7893ff,#4263eb);display:grid;place-items:center;color:white;font-weight:800}
+.brand strong{font-size:14px;letter-spacing:.2px}.brand small{display:block;color:#91a2ba;font-size:11px;margin-top:2px}
+.nav-label{font-size:10px;letter-spacing:1.2px;color:#8092ab;text-transform:uppercase;padding:0 10px;margin-bottom:5px}
+.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;color:#c1cde0;text-align:left;padding:11px 12px;border-radius:9px;display:flex;align-items:center;gap:12px}
+.nav button:hover{background:#243651}.nav button.active{background:#30476a;color:white;font-weight:650}
+.nav .ico{width:18px;text-align:center;font-size:16px}.side-note{margin-top:auto;background:#20324d;border:1px solid #344963;padding:13px;border-radius:12px;color:#c3d0e1;font-size:12px}
+.side-note b{color:white;display:block;margin-bottom:5px}
+.main{min-width:0}.topbar{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;z-index:10}
+.crumb{color:var(--muted);font-size:12px}.crumb b{color:var(--ink);font-size:14px;margin-left:7px}
+.top-actions{display:flex;align-items:center;gap:12px}.updated{font-size:11px;color:var(--muted)}
+.avatar{width:34px;height:34px;border-radius:50%;background:#e8edff;color:#4258ba;display:grid;place-items:center;font-weight:700}
+.content{padding:27px 32px 44px;max-width:1600px;margin:auto}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:22px}
+h1{font-size:24px;line-height:1.2;margin:0 0 6px;letter-spacing:-.4px}.subtitle{color:var(--muted);font-size:13px}
+.actions{display:flex;gap:9px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 12px;color:#344056;font-weight:600;font-size:12px}
+.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.btn:hover{filter:brightness(.98);box-shadow:0 2px 8px #1b2a4414}
+.filters{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+select,input{background:white;border:1px solid var(--line);border-radius:8px;padding:9px 11px;color:#39445a;font-size:12px;outline:none}
+select:focus,input:focus{border-color:#8ca0ff}
+.pill{border-radius:99px;padding:4px 8px;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.pill.red{background:var(--redbg);color:var(--red)}.pill.amber{background:var(--amberbg);color:var(--amber)}.pill.green{background:var(--greenbg);color:var(--green)}.pill.blue{background:var(--blue2);color:#435bd0}.pill.gray{background:#f0f2f6;color:#657087}
+.grid{display:grid;gap:15px}.kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:17px;box-shadow:var(--shadow);min-width:0}
+.kpi-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}
+.kpi-value{font-size:29px;font-weight:750;letter-spacing:-1px;margin:10px 0 4px}
+.kpi-foot{font-size:11px;color:var(--muted)}.kpi-icon{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:#f1f4fa;color:#5a6b8a}
+.two{grid-template-columns:1.45fr 1fr;margin-bottom:15px}.three{grid-template-columns:1.2fr 1fr 1fr}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.card-head h3{margin:0;font-size:14px}.muted{color:var(--muted)}.small{font-size:11px}
+.stream-row{display:grid;grid-template-columns:125px 1fr 75px;gap:12px;align-items:center;margin:17px 0}
+.stream-name{font-weight:650;font-size:12px}.stream-meta{font-size:10px;color:var(--muted);margin-top:3px}
+.bar{height:9px;background:#edf0f5;border-radius:99px;overflow:hidden;display:flex}.bar span{height:100%;display:block}
+.bar .ok{background:#36a77a}.bar .warn{background:#e5aa43}.bar .bad{background:#d85a66}
+.stream-score{text-align:right;font-size:12px;font-weight:700}
+.legend{display:flex;gap:13px;flex-wrap:wrap;color:var(--muted);font-size:10px;margin-top:12px}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}
+th{text-align:left;color:#7b8495;font-size:10px;font-weight:650;text-transform:uppercase;letter-spacing:.45px;padding:10px 11px;border-bottom:1px solid var(--line)}
+td{padding:12px 11px;border-bottom:1px solid #eef0f4;font-size:12px}tr:last-child td{border-bottom:0}
+tbody tr.clickable{cursor:pointer}tbody tr.clickable:hover{background:#f8f9fc}
+.initiative-name{font-weight:650;color:#24314a}.subcell{font-size:10px;color:var(--muted);margin-top:3px}
+.owner{display:flex;align-items:center;gap:7px}.mini-avatar{width:24px;height:24px;border-radius:50%;background:#edf0f8;color:#51617f;display:grid;place-items:center;font-size:9px;font-weight:700}
+.risk-list{display:grid;gap:0}.risk-item{display:grid;grid-template-columns:7px 1fr auto;gap:11px;padding:12px 0;border-bottom:1px solid #eef0f4;align-items:start}.risk-item:last-child{border:0}
+.risk-line{width:6px;height:100%;min-height:34px;border-radius:9px;background:#d75a66}.risk-line.amber{background:#e3a23b}
+.risk-title{font-weight:650;font-size:12px}.risk-desc{font-size:11px;color:var(--muted);margin-top:3px}
+.person{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin:14px 0}.person-name{font-weight:650;font-size:12px}.person-sub{font-size:10px;color:var(--muted)}
+.capacity-track{height:7px;background:#eef1f6;border-radius:99px;overflow:hidden;margin-top:6px}.capacity-track span{display:block;height:100%;border-radius:99px;background:#5a78eb}
+.section{display:none}.section.active{display:block}
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:16px;overflow:auto}
+.tabs button{border:0;background:none;padding:10px 13px;color:var(--muted);font-size:12px;white-space:nowrap;border-bottom:2px solid transparent}
+.tabs button.active{color:var(--blue);border-color:var(--blue);font-weight:700}
+.split{display:grid;grid-template-columns:1.3fr 1fr;gap:15px}
+.metric{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #eef0f4;font-size:12px}.metric:last-child{border:0}
+.metric b{font-weight:700}.metric span{color:var(--muted)}
+.board{display:grid;grid-template-columns:repeat(4,minmax(170px,1fr));gap:10px;overflow:auto}
+.lane{background:#eef1f6;border-radius:10px;padding:10px;min-height:240px}
+.lane-head{display:flex;justify-content:space-between;font-size:11px;font-weight:700;margin-bottom:10px}
+.task{background:#fff;border:1px solid #e4e8ef;border-radius:8px;padding:10px;margin-bottom:8px;cursor:pointer}
+.task:hover{border-color:#9aabf6}.task b{font-size:11px;display:block;margin:5px 0}.task small{font-size:10px;color:var(--muted)}
+.task-foot{display:flex;justify-content:space-between;align-items:center;margin-top:9px}
+.detail-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:15px}
+.modal-backdrop{position:fixed;inset:0;background:#101a2d77;z-index:30;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-backdrop.show{display:flex}.modal{width:min(800px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:16px;padding:22px;box-shadow:0 20px 70px #0b173a44}
+.modal-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:15px}
+.close{border:0;background:#f1f3f7;border-radius:8px;width:32px;height:32px;font-size:18px}
+.modal h2{font-size:19px;margin:0 0 5px}.modal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}
+.modal-stat{background:#f7f8fb;border-radius:9px;padding:12px}.modal-stat small{color:var(--muted);display:block;font-size:10px}.modal-stat b{font-size:18px;display:block;margin-top:5px}
+.callout{padding:12px 14px;border-radius:9px;background:#fff6e5;color:#78531a;font-size:12px;margin:12px 0}
+.notice{padding:10px 12px;border:1px dashed #d7dce6;border-radius:9px;color:#7a8495;font-size:11px;margin-top:15px}
+.link{color:var(--blue);font-weight:650;cursor:pointer}.empty{padding:30px;text-align:center;color:var(--muted)}
+@media(max-width:1050px){.app{grid-template-columns:210px 1fr}.kpis{grid-template-columns:repeat(2,1fr)}.two,.split,.detail-grid{grid-template-columns:1fr}}
+@media(max-width:720px){.app{grid-template-columns:1fr}.sidebar{padding:12px;gap:10px}.brand{padding:4px 8px 10px}.nav-label,.side-note{display:none}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;padding:9px}.topbar{height:58px;padding:0 16px}.content{padding:20px 14px}.page-head{display:block}.actions{margin-top:12px}.kpis{grid-template-columns:repeat(2,1fr)}.stream-row{grid-template-columns:100px 1fr 55px}.modal-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+ <div class="brand"><div class="logo">IT</div><div><strong>PORTFOLIO CONTROL</strong><small>Управление IT-инициативами</small></div></div>
+ <div><div class="nav-label">Рабочее пространство</div><nav class="nav">
+  <button class="active" data-page="overview"><span class="ico">▦</span>Обзор портфеля</button>
+  <button data-page="streams"><span class="ico">◫</span>Стримы и ресурсы</button>
+  <button data-page="initiatives"><span class="ico">◈</span>Инициативы</button>
+  <button data-page="tasks"><span class="ico">☷</span>Задачи и блокеры</button>
+ </nav></div>
+ <div class="side-note"><b>Демонстрационный режим</b>Данные и сигналы условные. Пороговые значения приведены для иллюстрации интерфейса и требуют согласования.</div>
+</aside>
+<main class="main">
+ <header class="topbar"><div class="crumb">IT Business Partner <b id="crumbTitle">/ Обзор портфеля</b></div><div class="top-actions"><span class="updated">Обновлено: сегодня, 09:30</span><div class="avatar">IT</div></div></header>
+ <div class="content">
+  <section id="overview" class="section active">
+   <div class="page-head"><div><h1>Обзор портфеля</h1><div class="subtitle">Единая картина обязательств, рисков и доступной емкости двух IT-стримов</div></div><div class="actions"><button class="btn" onclick="showToast('В демо-режиме выгрузка не подключена')">⇩ Экспорт отчёта</button><button class="btn primary" onclick="showToast('Данные демонстрационные — Jira не подключена')">↻ Обновить данные</button></div></div>
+   <div class="filters"><select id="periodFilter"><option>Текущий портфель</option><option>Последние 30 дней</option><option>Последние 90 дней</option></select><select id="streamFilter" onchange="filterOverview()"><option value="all">Все стримы</option><option>Финансы</option><option>Сервисы оплаты</option></select><span class="pill gray">Демо-данные · срез на 08.11.2026</span></div>
+   <div class="grid kpis">
+    <div class="card"><div class="kpi-top">Активные инициативы <span class="kpi-icon">◈</span></div><div class="kpi-value">18</div><div class="kpi-foot"><span class="pill blue">2 стрима</span> в работе сейчас</div></div>
+    <div class="card"><div class="kpi-top">Требуют внимания <span class="kpi-icon">⚑</span></div><div class="kpi-value" style="color:var(--amber)">7</div><div class="kpi-foot"><span class="pill amber">4 жёлтых</span> <span class="pill red">3 красных</span></div></div>
+    <div class="card"><div class="kpi-top">Загрузка аналитиков <span class="kpi-icon">◉</span></div><div class="kpi-value">91%</div><div class="kpi-foot">5 аналитиков · расчетная доступность</div></div>
+    <div class="card"><div class="kpi-top">Открытые блокеры <span class="kpi-icon">⛔</span></div><div class="kpi-value">4</div><div class="kpi-foot">2 блокера влияют на критичные сроки</div></div>
+   </div>
+   <div class="grid two">
+    <div class="card"><div class="card-head"><h3>Состояние стримов</h3><span class="small muted">По статусам инициатив</span></div>
+     <div class="stream-row"><div><div class="stream-name">Финансы</div><div class="stream-meta">11 активных инициатив</div></div><div class="bar"><span class="ok" style="width:55%"></span><span class="warn" style="width:27%"></span><span class="bad" style="width:18%"></span></div><div class="stream-score">2 <span class="muted">/ 3</span></div></div>
+     <div class="stream-row"><div><div class="stream-name">Сервисы оплаты</div><div class="stream-meta">7 активных инициатив</div></div><div class="bar"><span class="ok" style="width:57%"></span><span class="warn" style="width:29%"></span><span class="bad" style="width:14%"></span></div><div class="stream-score">1 <span class="muted">/ 2</span></div></div>
+     <div class="legend"><span><i class="dot" style="background:#36a77a"></i>В норме</span><span><i class="dot" style="background:#e5aa43"></i>Риск</span><span><i class="dot" style="background:#d85a66"></i>Критично</span></div>
+    </div>
+    <div class="card"><div class="card-head"><h3>Загрузка аналитиков</h3><span class="link" onclick="navigate('streams')">Подробнее →</span></div>
+     <div class="person"><div><div class="person-name">Анна К. <span class="pill red">110%</span></div><div class="person-sub">Финансы · 3 инициативы</div><div class="capacity-track"><span style="width:100%;background:#d85a66"></span></div></div><b>1,10</b></div>
+     <div class="person"><div><div class="person-name">Мария С. <span class="pill amber">95%</span></div><div class="person-sub">Финансы · 2 инициативы</div><div class="capacity-track"><span style="width:95%;background:#e3a23b"></span></div></div><b>0,95</b></div>
+     <div class="person"><div><div class="person-name">Илья П. <span class="pill green">80%</span></div><div class="person-sub">Сервисы оплаты · 2 инициативы</div><div class="capacity-track"><span style="width:80%"></span></div></div><b>0,80</b></div>
+    </div>
+   </div>
+   <div class="grid two">
+    <div class="card"><div class="card-head"><h3>Инициативы, требующие внимания</h3><span class="small muted">Сначала критичность, затем срок</span></div>
+     <div class="table-wrap"><table><thead><tr><th>Инициатива</th><th>Стрим</th><th>Сигнал</th><th>Прогноз / Due Date</th><th>Ответственный</th></tr></thead><tbody id="attentionRows">
+      <tr class="clickable" data-id="FIN-024"><td><div class="initiative-name">Автоматизация сверки платежей</div><div class="subcell">FIN-024 · M</div></td><td>Финансы</td><td><span class="pill red">Срок</span></td><td>+8 дней</td><td>Анна К.</td></tr>
+      <tr class="clickable" data-id="PAY-011"><td><div class="initiative-name">Новый сценарий возврата</div><div class="subcell">PAY-011 · L</div></td><td>Сервисы оплаты</td><td><span class="pill red">Блокер</span></td><td>+5 дней</td><td>Илья П.</td></tr>
+      <tr class="clickable" data-id="FIN-031"><td><div class="initiative-name">Единый реестр начислений</div><div class="subcell">FIN-031 · S</div></td><td>Финансы</td><td><span class="pill amber">Рост объема</span></td><td>в срок</td><td>Мария С.</td></tr>
+      <tr class="clickable" data-id="PAY-018"><td><div class="initiative-name">Интеграция нового провайдера</div><div class="subcell">PAY-018 · M</div></td><td>Сервисы оплаты</td><td><span class="pill amber">Релиз</span></td><td>риск +3 дня</td><td>Илья П.</td></tr>
+     </tbody></table></div>
+    </div>
+    <div class="card"><div class="card-head"><h3>Управленческие сигналы</h3><span class="pill red">3 критичных</span></div>
+     <div class="risk-list">
+      <div class="risk-item"><div class="risk-line"></div><div><div class="risk-title">FIN-024 — риск срыва срока</div><div class="risk-desc">2 задачи отстают; прогноз завершения позже Due Date на 8 дней.</div></div><span class="pill red">Высокий</span></div>
+      <div class="risk-item"><div class="risk-line"></div><div><div class="risk-title">PAY-011 — блокер тестового стенда</div><div class="risk-desc">Ожидание 3 рабочих дня; требуется владелец устранения.</div></div><span class="pill red">Высокий</span></div>
+      <div class="risk-item"><div class="risk-line amber"></div><div><div class="risk-title">Анна К. — загрузка выше емкости</div><div class="risk-desc">1,10 FTE на горизонте ближайших 4 недель.</div></div><span class="pill amber">Средний</span></div>
+      <div class="risk-item"><div class="risk-line amber"></div><div><div class="risk-title">PAY-018 — ближайший релиз</div><div class="risk-desc">Готовность может не попасть в ближайшее окно поставки.</div></div><span class="pill amber">Средний</span></div>
+     </div>
+    </div>
+   </div>
+   <div class="notice">Примечание: все значения, имена, инициативы, сроки и сигналы в прототипе вымышлены и нужны только для демонстрации возможного интерфейса.</div>
+  </section>
+
+  <section id="streams" class="section">
+   <div class="page-head"><div><h1>Стримы и ресурсы</h1><div class="subtitle">Пропускная способность, загрузка аналитиков и готовность принять новые инициативы</div></div><div class="actions"><button class="btn" onclick="showToast('В прототипе данные не экспортируются')">⇩ Экспорт</button></div></div>
+   <div class="filters"><select id="streamDetail" onchange="renderStreamDetail()"><option>Финансы</option><option>Сервисы оплаты</option></select><select><option>Горизонт: 4 недели</option><option>Горизонт: 8 недель</option></select></div>
+   <div class="grid kpis">
+    <div class="card"><div class="kpi-top">Активные инициативы</div><div class="kpi-value" id="sActive">11</div><div class="kpi-foot">В статусе In Progress</div></div>
+    <div class="card"><div class="kpi-top">Плановая загрузка</div><div class="kpi-value" id="sLoad">94%</div><div class="kpi-foot">От расчетной емкости аналитиков</div></div>
+    <div class="card"><div class="kpi-top">Входящий поток</div><div class="kpi-value" id="sQueue">4</div><div class="kpi-foot">Согласованы, ожидают старта</div></div>
+    <div class="card"><div class="kpi-top">Доступно к приему*</div><div class="kpi-value" id="sFree">1</div><div class="kpi-foot">Предварительная оценка на комитет</div></div>
+   </div>
+   <div class="grid split">
+    <div class="card"><div class="card-head"><h3>Загрузка по аналитикам</h3><span class="small muted">FTE / условная емкость 1,0</span></div><div id="streamPeople"></div><div class="notice">Порог 0,9 FTE показан как демонстрационная граница внимания, не утвержденный норматив.</div></div>
+    <div class="card"><div class="card-head"><h3>Портфель стрима</h3><span class="small muted">Распределение по статусам</span></div><div id="streamStatus"></div><div class="legend"><span><i class="dot" style="background:#36a77a"></i>В работе без сигнала</span><span><i class="dot" style="background:#e5aa43"></i>Риск</span><span><i class="dot" style="background:#d85a66"></i>Критично</span></div></div>
+   </div>
+   <div class="card" style="margin-top:15px"><div class="card-head"><h3>Прогноз высвобождения аналитической емкости</h3><span class="small muted">Демонстрационный прогноз</span></div><div class="table-wrap"><table><thead><tr><th>Аналитик</th><th>Текущая загрузка</th><th>Ближайшее освобождение</th><th>Инициативы в работе</th><th>Рекомендация</th></tr></thead><tbody id="releaseRows"></tbody></table></div></div>
+   <div class="notice">* Число новых инициатив — иллюстративная оценка. Для реального расчета нужны прогноз остатка работ, календарь доступности и подтвержденная емкость команды.</div>
+  </section>
+
+  <section id="initiatives" class="section">
+   <div class="page-head"><div><h1>Портфель инициатив</h1><div class="subtitle">Контроль статусов, сроков, размеров и ответственных</div></div><div class="actions"><button class="btn" onclick="showToast('В демо-режиме импорт недоступен')">⇧ Импорт Jira</button><button class="btn primary" onclick="showToast('Создание инициативы выполняется в Jira')">＋ Новая инициатива</button></div></div>
+   <div class="filters"><select id="iStream" onchange="renderInitiatives()"><option value="all">Все стримы</option><option>Финансы</option><option>Сервисы оплаты</option></select><select id="iSignal" onchange="renderInitiatives()"><option value="all">Все сигналы</option><option value="red">Красный</option><option value="amber">Жёлтый</option><option value="green">Зелёный</option></select><select id="iStatus" onchange="renderInitiatives()"><option value="all">Все статусы</option><option>In Progress</option><option>Backlog</option><option>New</option></select><input id="iSearch" placeholder="Поиск по названию или ID" oninput="renderInitiatives()"></div>
+   <div class="card"><div class="card-head"><h3>Инициативы</h3><span class="small muted" id="initiativeCount">12 записей</span></div><div class="table-wrap"><table><thead><tr><th>ID / Инициатива</th><th>Стрим</th><th>Статус</th><th>Размер</th><th>Аналитик</th><th>Due Date</th><th>Прогноз</th><th>Сигнал</th></tr></thead><tbody id="initiativeRows"></tbody></table></div></div>
+  </section>
+
+  <section id="tasks" class="section">
+   <div class="page-head"><div><h1>Задачи и блокеры</h1><div class="subtitle">Поток работ на досках и препятствия, влияющие на сроки инициатив</div></div><div class="actions"><button class="btn" onclick="showToast('Ссылка на Jira доступна в карточке задачи')">↗ Открыть Jira</button></div></div>
+   <div class="filters"><select id="taskStream" onchange="renderBoard()"><option value="all">Все стримы</option><option>Финансы</option><option>Сервисы оплаты</option></select><select id="taskKind" onchange="renderBoard()"><option value="all">Все типы</option><option>Story</option><option>Task</option><option>Bug</option><option>Spike</option></select><span class="pill red">4 открытых блокера</span></div>
+   <div class="grid kpis">
+    <div class="card"><div class="kpi-top">Всего задач в потоке</div><div class="kpi-value">42</div><div class="kpi-foot">Включая Backlog и активные колонки</div></div>
+    <div class="card"><div class="kpi-top">Просроченные</div><div class="kpi-value" style="color:var(--red)">6</div><div class="kpi-foot">В 4 инициативах</div></div>
+    <div class="card"><div class="kpi-top">Заблокированные</div><div class="kpi-value" style="color:var(--amber)">4</div><div class="kpi-foot">2 дольше 2 рабочих дней</div></div>
+    <div class="card"><div class="kpi-top">Без движения</div><div class="kpi-value">5</div><div class="kpi-foot">Условный порог: более 7 дней</div></div>
+   </div>
+   <div class="board" id="board"></div>
+   <div class="card" style="margin-top:15px"><div class="card-head"><h3>Реестр блокеров</h3><span class="small muted">Связь с инициативой и ответственным</span></div><div class="table-wrap"><table><thead><tr><th>Задача</th><th>Инициатива</th><th>Причина</th><th>Длительность</th><th>Владелец</th><th>Влияние</th></tr></thead><tbody>
+    <tr class="clickable" onclick="openTask('PAY-011-42')"><td>PAY-011-42</td><td>Новый сценарий возврата</td><td>Недоступен тестовый стенд</td><td><span class="pill red">3 раб. дня</span></td><td>Команда платформы</td><td>Срок +5 дней</td></tr>
+    <tr class="clickable" onclick="openTask('FIN-024-18')"><td>FIN-024-18</td><td>Автоматизация сверки платежей</td><td>Ожидание доступа к данным</td><td><span class="pill amber">1 раб. день</span></td><td>Владелец системы</td><td>Риск срока</td></tr>
+    <tr class="clickable" onclick="openTask('PAY-018-09')"><td>PAY-018-09</td><td>Интеграция нового провайдера</td><td>Внешняя зависимость</td><td><span class="pill amber">2 раб. дня</span></td><td>Поставщик</td><td>Риск релиза</td></tr>
+   </tbody></table></div></div>
+  </section>
+ </div>
+</main>
+</div>
+
+<div class="modal-backdrop" id="modal" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modal-head"><div><h2 id="modalTitle">Карточка инициативы</h2><div id="modalSubtitle" class="subtitle"></div></div><button class="close" onclick="closeModal()">×</button></div><div id="modalBody"></div></div></div>
+<div id="toast" style="position:fixed;bottom:22px;right:22px;background:#1d2b43;color:white;padding:12px 16px;border-radius:9px;box-shadow:0 8px 28px #17243a33;display:none;z-index:50;font-size:12px"></div>
+<script>
+const initiatives=[
+{id:'FIN-024',name:'Автоматизация сверки платежей',stream:'Финансы',status:'In Progress',size:'M',owner:'Анна К.',due:'18.11.2026',forecast:'26.11.2026',signal:'red',reason:'Две задачи отстают от плана; одна ожидает доступ к данным.',work:68,estimate:56,remaining:22,progress:72,systems:3,blockers:1,release:'30.11.2026',tasks:['FIN-024-18','FIN-024-21','FIN-024-25']},
+{id:'PAY-011',name:'Новый сценарий возврата',stream:'Сервисы оплаты',status:'In Progress',size:'L',owner:'Илья П.',due:'20.11.2026',forecast:'25.11.2026',signal:'red',reason:'Тестовый стенд недоступен 3 рабочих дня; задержка блокирует тестирование.',work:104,estimate:96,remaining:30,progress:65,systems:4,blockers:1,release:'30.11.2026',tasks:['PAY-011-42','PAY-011-45']},
+{id:'FIN-031',name:'Единый реестр начислений',stream:'Финансы',status:'In Progress',size:'S',owner:'Мария С.',due:'28.11.2026',forecast:'27.11.2026',signal:'amber',reason:'Обнаружено расширение объема требований; требуется повторная оценка.',work:32,estimate:24,remaining:10,progress:58,systems:2,blockers:0,release:'07.12.2026',tasks:['FIN-031-03','FIN-031-07']},
+{id:'PAY-018',name:'Интеграция нового провайдера',stream:'Сервисы оплаты',status:'In Progress',size:'M',owner:'Илья П.',due:'24.11.2026',forecast:'27.11.2026',signal:'amber',reason:'Есть риск не попасть в ближайшее релизное окно.',work:49,estimate:48,remaining:18,progress:70,systems:4,blockers:1,release:'30.11.2026',tasks:['PAY-018-09','PAY-018-12']},
+{id:'FIN-019',name:'Уточнение правил закрытия периода',stream:'Финансы',status:'In Progress',size:'S',owner:'Ольга В.',due:'15.11.2026',forecast:'14.11.2026',signal:'green',reason:'Отклонений по сроку и объему не выявлено.',work:19,estimate:24,remaining:3,progress:85,systems:1,blockers:0,release:'16.11.2026',tasks:['FIN-019-02']},
+{id:'FIN-027',name:'Автоматизация контрольных отчетов',stream:'Финансы',status:'In Progress',size:'M',owner:'Анна К.',due:'05.12.2026',forecast:'04.12.2026',signal:'green',reason:'Работы идут по плану.',work:35,estimate:56,remaining:19,progress:48,systems:2,blockers:0,release:'07.12.2026',tasks:['FIN-027-11']},
+{id:'FIN-034',name:'Изменение маршрута согласования',stream:'Финансы',status:'Backlog',size:'XS',owner:'Мария С.',due:'—',forecast:'—',signal:'green',reason:'Ожидает планирования.',work:0,estimate:16,remaining:16,progress:0,systems:1,blockers:0,release:'—',tasks:[]},
+{id:'PAY-021',name:'Поддержка нового метода оплаты',stream:'Сервисы оплаты',status:'Backlog',size:'M',owner:'Илья П.',due:'—',forecast:'—',signal:'green',reason:'Согласована, ожидает старта.',work:0,estimate:56,remaining:56,progress:0,systems:2,blockers:0,release:'—',tasks:[]},
+{id:'FIN-036',name:'Сверка комиссий партнеров',stream:'Финансы',status:'New',size:'S',owner:'Анна К.',due:'—',forecast:'—',signal:'amber',reason:'Требуется уточнить входные данные.',work:0,estimate:24,remaining:24,progress:0,systems:2,blockers:0,release:'—',tasks:[]},
+{id:'PAY-025',name:'Улучшение мониторинга оплат',stream:'Сервисы оплаты',status:'In Progress',size:'S',owner:'Елена М.',due:'02.12.2026',forecast:'02.12.2026',signal:'green',reason:'Работы идут по плану.',work:18,estimate:24,remaining:5,progress:62,systems:1,blockers:0,release:'07.12.2026',tasks:['PAY-025-04']},
+{id:'FIN-039',name:'Новый формат выгрузки',stream:'Финансы',status:'In Progress',size:'XS',owner:'Ольга В.',due:'22.11.2026',forecast:'24.11.2026',signal:'amber',reason:'Зависимость от смежной системы.',work:14,estimate:16,remaining:6,progress:60,systems:3,blockers:0,release:'30.11.2026',tasks:['FIN-039-02']},
+{id:'PAY-028',name:'Обновление платежной формы',stream:'Сервисы оплаты',status:'In Progress',size:'M',owner:'Елена М.',due:'10.12.2026',forecast:'09.12.2026',signal:'green',reason:'Работы идут по плану.',work:27,estimate:56,remaining:24,progress:42,systems:2,blockers:0,release:'14.12.2026',tasks:['PAY-028-05']}
+];
+const tasks=[
+{id:'FIN-024-18',name:'Получить доступ к витрине платежей',stream:'Финансы',initiative:'FIN-024',kind:'Task',status:'Blocked',owner:'Анна К.',age:'3 дня',due:'07.11',blocker:'Доступ к данным',late:true},
+{id:'PAY-011-42',name:'Подготовить стенд для тестирования',stream:'Сервисы оплаты',initiative:'PAY-011',kind:'Task',status:'Blocked',owner:'Платформа',age:'3 дня',due:'06.11',blocker:'Тестовый стенд',late:true},
+{id:'FIN-024-21',name:'Реализовать правила сверки',stream:'Финансы',initiative:'FIN-024',kind:'Story',status:'In Progress',owner:'Разработчик 1',age:'5 дней',due:'12.11',blocker:'',late:false},
+{id:'PAY-018-09',name:'Согласовать контракт провайдера',stream:'Сервисы оплаты',initiative:'PAY-018',kind:'Spike',status:'Review',owner:'Илья П.',age:'2 дня',due:'09.11',blocker:'Внешняя зависимость',late:false},
+{id:'FIN-031-03',name:'Согласовать структуру реестра',stream:'Финансы',initiative:'FIN-031',kind:'Story',status:'Done',owner:'Мария С.',age:'1 день',due:'05.11',blocker:'',late:false},
+{id:'PAY-011-45',name:'Разработать сценарий возврата',stream:'Сервисы оплаты',initiative:'PAY-011',kind:'Story',status:'Backlog',owner:'Разработчик 2',age:'—',due:'18.11',blocker:'',late:false},
+{id:'FIN-019-02',name:'Проверить контрольные правила',stream:'Финансы',initiative:'FIN-019',kind:'Bug',status:'Done',owner:'Ольга В.',age:'2 дня',due:'08.11',blocker:'',late:false},
+{id:'PAY-025-04',name:'Добавить метрики мониторинга',stream:'Сервисы оплаты',initiative:'PAY-025',kind:'Task',status:'In Progress',owner:'Разработчик 3',age:'4 дня',due:'12.11',blocker:'',late:false},
+{id:'FIN-027-11',name:'Реализовать отчетный модуль',stream:'Финансы',initiative:'FIN-027',kind:'Story',status:'Backlog',owner:'Разработчик 1',age:'—',due:'20.11',blocker:'',late:false},
+{id:'FIN-039-02',name:'Проверить формат выгрузки',stream:'Финансы',initiative:'FIN-039',kind:'Spike',status:'Review',owner:'Анна К.',age:'8 дней',due:'08.11',blocker:'',late:true}
+];
+const signalLabel={red:'Красный',amber:'Жёлтый',green:'Зелёный'};
+function navigate(page){
+ document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+ document.getElementById(page).classList.add('active');
+ document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
+ const names={overview:'Обзор портфеля',streams:'Стримы и ресурсы',initiatives:'Инициативы',tasks:'Задачи и блокеры'};
+ document.getElementById('crumbTitle').textContent='/ '+names[page];
+ if(page==='initiatives')renderInitiatives();if(page==='streams')renderStreamDetail();if(page==='tasks')renderBoard();
+}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.page)));
+document.querySelectorAll('#attentionRows tr').forEach(r=>r.addEventListener('click',()=>openInitiative(r.dataset.id)));
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.style.display='none',2600)}
+function filterOverview(){const v=document.getElementById('streamFilter').value;document.querySelectorAll('#attentionRows tr').forEach(r=>{const stream=r.children[1].textContent;r.style.display=v==='all'||stream===v?'':'none'})}
+function openInitiative(id){
+ const x=initiatives.find(i=>i.id===id);if(!x)return;
+ document.getElementById('modalTitle').textContent=x.name;document.getElementById('modalSubtitle').textContent=x.id+' · '+x.stream+' · Ответственный: '+x.owner;
+ const status=x.signal==='red'?'red':x.signal==='amber'?'amber':'green';
+ document.getElementById('modalBody').innerHTML=`
+ <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="pill ${status}">${signalLabel[x.signal]}</span><span class="pill blue">${x.size}</span><span class="pill gray">${x.status}</span></div>
+ <div class="modal-grid">
+ <div class="modal-stat"><small>Исходный Due Date</small><b>${x.due}</b></div><div class="modal-stat"><small>Прогноз завершения</small><b>${x.forecast}</b></div><div class="modal-stat"><small>Прогресс</small><b>${x.progress}%</b></div>
+ <div class="modal-stat"><small>Worklog</small><b>${x.work} ч</b></div><div class="modal-stat"><small>Норматив</small><b>${x.estimate} ч</b></div><div class="modal-stat"><small>Остаток (оценка)</small><b>${x.remaining} ч</b></div>
+ </div>
+ <div class="card-head"><h3>Причина сигнала</h3></div><div class="callout">${x.reason}</div>
+ <div class="metric"><b>Задействовано систем</b><span>${x.systems}</span></div><div class="metric"><b>Открытые блокеры</b><span>${x.blockers}</span></div><div class="metric"><b>Ближайший релиз</b><span>${x.release}</span></div>
+ <div class="card-head" style="margin-top:18px"><h3>Связанные задачи</h3><span class="small muted">${x.tasks.length} задач</span></div>
+ ${x.tasks.length?x.tasks.map(t=>`<div class="metric"><b><span class="link" onclick="openTask('${t}')">${t}</span></b><span>Открыть карточку →</span></div>`).join(''):'<div class="muted small">Задачи еще не созданы или не связаны.</div>'}
+ <div class="notice">Демонстрационная карточка. В рабочей версии здесь будут ссылки на Jira, история изменений, согласованные переносы и детализация расчётов.</div>`;
+ document.getElementById('modal').classList.add('show');
+}
+function openTask(id){
+ const t=tasks.find(x=>x.id===id)||{id,name:'Задача из связанного списка',stream:'—',initiative:'—',kind:'Task',status:'In Progress',owner:'—',age:'—',due:'—',blocker:''};
+ document.getElementById('modalTitle').textContent=t.name;document.getElementById('modalSubtitle').textContent=t.id+' · '+t.kind+' · '+t.stream;
+ document.getElementById('modalBody').innerHTML=`<div class="modal-grid"><div class="modal-stat"><small>Статус</small><b>${t.status}</b></div><div class="modal-stat"><small>Исполнитель</small><b>${t.owner}</b></div><div class="modal-stat"><small>Возраст этапа</small><b>${t.age}</b></div></div><div class="metric"><b>Связанная инициатива</b><span><a class="link" onclick="openInitiative('${t.initiative}')">${t.initiative}</a></span></div><div class="metric"><b>Due Date</b><span>${t.due}</span></div><div class="metric"><b>Блокер</b><span>${t.blocker||'Нет'}</span></div><div class="callout">${t.blocker?'Задача ожидает устранения препятствия. Нужно проверить владельца и влияние на срок инициативы.':'Для демонстрации показаны основные атрибуты задачи.'}</div><div class="notice">В рабочей версии — переход в Jira по прямой ссылке, история статусов, worklog и комментарии.</div>`;
+ document.getElementById('modal').classList.add('show');
+}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function renderInitiatives(){
+ const s=document.getElementById('iStream').value, sig=document.getElementById('iSignal').value, st=document.getElementById('iStatus').value, q=document.getElementById('iSearch').value.toLowerCase();
+ const rows=initiatives.filter(x=>(s==='all'||x.stream===s)&&(sig==='all'||x.signal===sig)&&(st==='all'||x.status===st)&&(`${x.id} ${x.name}`.toLowerCase().includes(q)));
+ document.getElementById('initiativeCount').textContent=rows.length+' записей';
+ document.getElementById('initiativeRows').innerHTML=rows.map(x=>`<tr class="clickable" onclick="openInitiative('${x.id}')"><td><div class="initiative-name">${x.name}</div><div class="subcell">${x.id}</div></td><td>${x.stream}</td><td>${x.status}</td><td><span class="pill blue">${x.size}</span></td><td>${x.owner}</td><td>${x.due}</td><td>${x.forecast}</td><td><span class="pill ${x.signal}">${signalLabel[x.signal]}</span></td></tr>`).join('')||'<tr><td colspan="8" class="empty">По выбранным фильтрам инициативы не найдены</td></tr>';
+}
+function renderStreamDetail(){
+ const stream=document.getElementById('streamDetail').value, finance=stream==='Финансы';
+ const people=finance?[['Анна К.','1,10',110,3],['Мария С.','0,95',95,2],['Ольга В.','0,78',78,2]]:[['Илья П.','0,80',80,2],['Елена М.','0,88',88,2]];
+ document.getElementById('sActive').textContent=finance?'11':'7';document.getElementById('sLoad').textContent=finance?'94%':'84%';document.getElementById('sQueue').textContent=finance?'4':'3';document.getElementById('sFree').textContent=finance?'1':'2';
+ document.getElementById('streamPeople').innerHTML=people.map(p=>`<div class="person"><div><div class="person-name">${p[0]} <span class="pill ${p[2]>100?'red':p[2]>=90?'amber':'green'}">${p[1]} FTE</span></div><div class="person-sub">${p[3]} инициативы в работе</div><div class="capacity-track"><span style="width:${Math.min(p[2],100)}%;background:${p[2]>100?'#d85a66':p[2]>=90?'#e3a23b':'#5a78eb'}"></span></div></div><b>${p[1]}</b></div>`).join('');
+ document.getElementById('streamStatus').innerHTML=`<div class="metric"><span>В работе без критичных сигналов</span><b>${finance?6:4}</b></div><div class="metric"><span>Требуют внимания</span><b>${finance?3:2}</b></div><div class="metric"><span>Критичные</span><b>${finance?2:1}</b></div><div class="metric"><span>Backlog / ожидают старта</span><b>${finance?4:3}</b></div><div class="metric"><span>Просроченные задачи</span><b>${finance?4:2}</b></div>`;
+ document.getElementById('releaseRows').innerHTML=people.map((p,i)=>`<tr><td>${p[0]}</td><td>${p[1]} FTE</td><td>${finance?['24.11.2026','28.11.2026','20.11.2026'][i]||'—':['25.11.2026','02.12.2026'][i]||'—'}</td><td>${p[3]}</td><td>${p[2]>100?'Перераспределить часть работ':p[2]>=90?'Не назначать новую инициативу без проверки':'Есть потенциальный резерв'}</td></tr>`).join('');
+}
+function renderBoard(){
+ const stream=document.getElementById('taskStream').value,kind=document.getElementById('taskKind').value;
+ const lanes=[['Backlog','Backlog'],['В работе','In Progress'],['На проверке','Review'],['Заблокировано','Blocked']];
+ document.getElementById('board').innerHTML=lanes.map(([label,status])=>{const list=tasks.filter(t=>(stream==='all'||t.stream===stream)&&(kind==='all'||t.kind===kind)&&t.status===status);return `<div class="lane"><div class="lane-head"><span>${label}</span><span class="pill gray">${list.length}</span></div>${list.map(t=>`<div class="task" onclick="openTask('${t.id}')"><small>${t.id} · ${t.kind}</small><b>${t.name}</b><small>${t.initiative} · ${t.owner}</small><div class="task-foot"><span class="small muted">${t.age}</span>${t.blocker?'<span class="pill red">Блокер</span>':t.late?'<span class="pill amber">Просрочка</span>':'<span class="pill gray">В работе</span>'}</div></div>`).join('')||'<div class="small muted" style="padding:12px 4px">Нет задач</div>'}</div>`}).join('');
+}
+renderInitiatives();renderStreamDetail();renderBoard();
+</script>
+</body></html>
